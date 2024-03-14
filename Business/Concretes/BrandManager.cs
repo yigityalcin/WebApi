@@ -23,10 +23,24 @@ public class BrandManager : IBrandService
     public CreatedBrandResponse Add(CreateBrandRequest createBrandRequest)
     {
         //Business Rules
-        Brand brand = new();
-        brand.Name = createBrandRequest.Name;
 
-        _brandDal.Add()
+        //Mapping ---> automapper  
+        //Gelen requesti veritabanı nesnesine çevirdik
+        Brand brand = new Brand();
+        brand.Name = createBrandRequest.Name;
+        brand.CreatedDate = DateTime.Now;
+
+        //veritabanına ekledik
+        _brandDal.Add(brand);
+
+        //veritabanından geleni de responseye çevirip 
+        CreatedBrandResponse createdBrandResponse = new CreatedBrandResponse();
+        createdBrandResponse.Name = brand.Name;
+        createdBrandResponse.Id = 4;
+        createdBrandResponse.CreatedDate = brand.CreatedDate;
+
+        //returnledik.
+        return createdBrandResponse;
     }
 
     public List<GetAllBrandResponse> GetAll()
